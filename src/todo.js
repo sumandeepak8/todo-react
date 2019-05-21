@@ -1,44 +1,41 @@
 import React, { Component } from "react";
 import "./App.css";
+import Task from "./Task";
 
 class Todo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: props.name,
-      item: "",
-      items: []
+      name: props.latestTodoName,
+      task: "",
+      tasks: []
     };
-    this.addItem = this.addItem.bind(this);
+    this.addTask = this.addTask.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event) {
-    this.setState({ item: event.target.value });
+    this.setState({ task: event.target.value });
   }
 
-  getItems() {
-    let items = [];
-    this.state.items.forEach(itemContent => {
-      items.push(<li>{itemContent}</li>);
-    });
+  tasks = () => (
+    <ul>
+      {this.state.tasks.map(task => (
+        <Task content={task} />
+      ))}
+    </ul>
+  );
+
+  addTask() {
+    this.state.tasks.push(this.state.task);
+    this.setState({ tasks: this.state.tasks });
+  }
+
+  addItemDiv() {
     return (
       <div>
-        <ul>{items}</ul>
-      </div>
-    );
-  }
-
-  addItem() {
-    this.state.items.push(this.state.item);
-    this.setState({ items: this.state.items });
-  }
-
-  getAddItemButton() {
-    return (
-      <div>
-        <input placeholder="add your item" onChange={this.handleChange} />
-        <button onClick={this.addItem}>add item</button>
+        <input placeholder="add your task" onChange={this.handleChange} />
+        <button onClick={this.addTask}>add task</button>
       </div>
     );
   }
@@ -47,8 +44,8 @@ class Todo extends Component {
     return (
       <div id={this.state.name} className="todo">
         <h3>{this.state.name}</h3>
-        {this.getAddItemButton()}
-        {this.getItems()}
+        {this.addItemDiv()}
+        {this.tasks()}
       </div>
     );
   }

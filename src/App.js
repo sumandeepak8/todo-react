@@ -6,7 +6,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
+      latestTodoName: "",
       todos: []
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -15,38 +15,30 @@ class App extends Component {
   }
 
   handleChange(event) {
-    this.setState({ name: event.target.value });
+    this.setState({ latestTodoName: event.target.value });
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    this.state.todos.push(this.state.name);
+    this.state.todos.push(this.state.latestTodoName);
     this.setState({
-      name: this.state.name,
+      latestTodoName: this.state.latestTodoName,
       todos: this.state.todos
     });
   }
 
-  getTodos() {
-    let allTodos = [];
-    this.state.todos.forEach(e => {
-      let todo = <Todo name={this.state.name} />;
-      allTodos.push(todo);
-    });
-    return allTodos;
-  }
+  getTodos = () =>
+    this.state.todos.map(() => (
+      <Todo latestTodoName={this.state.latestTodoName} />
+    ));
 
   render() {
     return (
       <div>
         <h1>TODO App</h1>
-        <input
-          type="text"
-          placeholder="type the name of TODO"
-          onChange={this.handleChange}
-        />
+        <input type="text" placeholder="TODO" onChange={this.handleChange} />
         <input type="submit" onClick={this.handleSubmit} value="add" />
-        {this.getTodos()}
+        <div className="todos">{this.getTodos()}</div>
       </div>
     );
   }
